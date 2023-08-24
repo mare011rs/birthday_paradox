@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Birthday Paradox</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="left">
+
+            <form method="post">
+                <label for="num_of_people_input">Enter number of people:</label>
+                <input type="number" id="num_of_people_input" name="num_of_people_input" required min="0" max="365">
+                <button type="submit">Generate list</button>
+            </form>
+
+            {% if match_chance %}
+            <p>Chance of a match is: {{ match_chance }}</p>
+            {% endif %}
+
+            {% if result %}
+                {% for x in result %}
+                    {% if x in duplicates %}
+                        <span style="color:red;">  {{ x }}  </span>
+                    {% else %}
+                        <span>  {{ x }}  </span>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+        </div>
+
+        <div class="right">
+            <p>
+                This is the explanation for the app.
+            </p>
+        </div>
+
+    </div>  
+
+</body>
+</html>

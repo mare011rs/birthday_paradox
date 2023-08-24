@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+  }
+
+  /* Style for the left div */
+.left {
+    flex: 1; /* Take up an equal amount of space */
+    padding: 20px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+  /* Style for the right div */
+.right {
+    flex: 1; /* Take up an equal amount of space */
+    padding: 20px;
+    border: 1px solid #ccc;
+    margin-left: 10px;
+}
