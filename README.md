@@ -7,9 +7,9 @@ We intuitively think that because there are 365 days in the year we would need h
 ## How to run
 1. Download [Docker desktop](https://www.docker.com/products/docker-desktop/), install it on your computer and run it.
 2. Run the following commands 
-`
+```bash
 git clone https://github.com/mare011rs/birthday_paradox.git
 cd birthday_paradox
 docker build -t birthday_paradox .
 docker run -p 5001:5001 birthday_paradox
-`
+```
