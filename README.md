@@ -13,3 +13,4 @@ cd birthday_paradox
 docker build -t birthday_paradox .
 docker run -p 5001:5001 birthday_paradox
 ```
+3. Run `http://localhost:5001/` in your browser.
