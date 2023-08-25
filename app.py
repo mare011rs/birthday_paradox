@@ -3,7 +3,6 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-
 import random
 from datetime import datetime, timedelta
 import os
@@ -73,8 +72,10 @@ app.config['UPLOAD_FOLDER'] = 'static/images'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    number = ''
     if request.method == 'POST':
         num_of_people_input = int(request.form['num_of_people_input']) 
+        number = num_of_people_input
         dates = generate_dates(num_of_people_input)
         match_chance = calc_match_chance(num_of_people_input)
         match_chance = f'{round(match_chance*100, 2)}%'
@@ -88,19 +89,11 @@ def index():
             match_chance=match_chance,
             result=dates,
             duplicates=duplicates,
-            plot_url=plot
+            plot_url=plot,
+            number=number
             )
 
     return render_template("index.html")
-
-
-
-    
-
-
-
-
-
 
 
 if __name__ == '__main__':
