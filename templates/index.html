@@ -21,6 +21,11 @@
             <p>Chance of a match is: {{ match_chance }}</p>
             {% endif %}
 
+            {% if plot_url %}
+            <img src="{{ plot_url }}" alt="Plot Image">
+            {% endif %}
+
+            <p>Generated dates:</p>
             {% if result %}
                 {% for x in result %}
                     {% if x in duplicates %}

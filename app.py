@@ -1,7 +1,12 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, url_for
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
 
 import random
 from datetime import datetime, timedelta
+import os
 
 
 def generate_dates(n):
@@ -18,12 +23,14 @@ def generate_dates(n):
     
     return random_dates
 
+
 def calc_match_chance(n):
     # number of possible combinations
     combinations = n*(n-1)/2
     # chance for match
     match_chance = 1-(364/365)**combinations
     return match_chance
+
 
 def find_duplicates(lst):
     seen = set()
@@ -36,8 +43,33 @@ def find_duplicates(lst):
     return duplicates
 
 
+def create_line_plot(n):
+    plt.clf()
+    num_of_people = list(range(1,366))
+    probability = [calc_match_chance(x)*100 for x in num_of_people]
+
+    probability_for_n = calc_match_chance(n)*100
+    plt.plot(num_of_people, probability, color='black')
+    plt.scatter(n, calc_match_chance(n)*100, color='red')
+    plt.xlabel('Number of people')
+    plt.ylabel('Probability')
+
+    y_offset = 10 if n >= 9 else -10
+    plt.annotate(f'{round(probability_for_n, 2)}% chance for matching birthdays',  
+        xy=(n, probability_for_n), 
+        xytext=(n+10 if n <= 75 else 130, probability_for_n-y_offset),  
+        arrowprops=dict(facecolor='black', arrowstyle='->')) 
+
+    plot_name = 'line_chart.png'
+    plot_path = os.path.join(app.config['UPLOAD_FOLDER'], plot_name)
+    plt.savefig(plot_path)
+    plot_url = url_for('static', filename=f'images/{plot_name}')
+
+    return plot_url
+
+
 app = Flask(__name__)
-app.secret_key = "your_secret_key_here"
+app.config['UPLOAD_FOLDER'] = 'static/images'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -47,7 +79,17 @@ def index():
         match_chance = calc_match_chance(num_of_people_input)
         match_chance = f'{round(match_chance*100, 2)}%'
         duplicates = find_duplicates(dates)
-        return render_template("index.html", match_chance=match_chance, result=dates, duplicates=duplicates)
+
+        plot = create_line_plot(num_of_people_input)
+        
+
+        return render_template(
+            "index.html",
+            match_chance=match_chance,
+            result=dates,
+            duplicates=duplicates,
+            plot_url=plot
+            )
 
     return render_template("index.html")
 
